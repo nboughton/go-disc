@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 
 	"github.com/jroimartin/gocui"
@@ -32,14 +31,6 @@ func uiLayout(g *gocui.Gui) error {
 
 		// Opening Message
 		fmt.Fprintln(v, "Welcome to go-disc")
-
-		go func() {
-			bufInput := bufio.NewReader(conn)
-			for {
-				str, _ := bufInput.ReadString('\n')
-				fmt.Fprint(v, str)
-			}
-		}()
 	}
 
 	if v, err := g.SetView(vInput, -1, maxY-5, maxX, maxY); err != nil {

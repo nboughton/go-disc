@@ -46,6 +46,8 @@ func main() {
 		log.Fatal(err)
 	}
 
+	go recv(gui, conn)
+
 	if err := gui.MainLoop(); err != nil && err != gocui.ErrQuit {
 		log.Fatal(err)
 	}

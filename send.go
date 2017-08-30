@@ -13,5 +13,6 @@ func send(g *gocui.Gui, v *gocui.View) error {
 		return err
 	}
 
+	v.Clear()
 	return nil
 }
