@@ -1,6 +1,7 @@
 package main
 
 import (
+	//"bufio"
 	"fmt"
 
 	"github.com/jroimartin/gocui"
@@ -15,7 +16,7 @@ const (
 func uiLayout(g *gocui.Gui) error {
 	maxX, maxY := g.Size()
 
-	if v, err := g.SetView(vLeftSide, -1, -1, int(0.2*float32(maxX)), maxY-5); err != nil {
+	if v, err := g.SetView(vLeftSide, 0, 0, int(0.2*float32(maxX)), maxY); err != nil {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
@@ -23,25 +24,18 @@ func uiLayout(g *gocui.Gui) error {
 		v.Title = "Map"
 	}
 
-	if v, err := g.SetView(vMain, int(0.2*float32(maxX)), -1, maxX, maxY-5); err != nil {
+	if v, err := g.SetView(vMain, int(0.2*float32(maxX)), 0, maxX, maxY); err != nil {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
 
 		// Set some view paramters
 		v.Title = "Main"
-		v.Autoscroll = true
+		//v.Autoscroll = true
 		v.Wrap = true
 
 		// Opening Message
 		fmt.Fprintln(v, "Welcome to go-disc")
-
-		go func() {
-			for {
-				str, _ := dataIn.ReadString('\n')
-				fmt.Fprint(v, str+"\n")
-			}
-		}()
 	}
 
 	if v, err := g.SetView(vInput, -1, maxY-5, maxX, maxY); err != nil {

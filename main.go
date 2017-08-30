@@ -1,7 +1,7 @@
 package main
 
 import (
-	"bufio"
+	//"bufio"
 	"flag"
 	"fmt"
 	"log"
@@ -17,8 +17,8 @@ type config struct {
 }
 
 var (
-	conn   gotelnet.Conn
-	dataIn *bufio.Reader
+	conn gotelnet.Conn
+	//recvChan = make(chan string)
 )
 
 func main() {
@@ -37,8 +37,6 @@ func main() {
 	}
 	defer conn.Close()
 
-	dataIn = bufio.NewReader(conn)
-
 	// Initialise gui
 	gui, err := gocui.NewGui(gocui.OutputNormal)
 	if err != nil {
@@ -54,14 +52,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	/*
-		go func() {
-			for line := range dataIn {
-
-			}
-		}()
-		//go recv(gui, conn)
-	*/
 	// Run loop
 	if err := gui.MainLoop(); err != nil && err != gocui.ErrQuit {
 		log.Fatal(err)
