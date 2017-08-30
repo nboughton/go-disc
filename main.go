@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
 	"log"
@@ -16,6 +15,10 @@ type config struct {
 	Port int
 }
 
+var (
+	conn gotelnet.Conn
+)
+
 func main() {
 	g := flag.String("g", "Discworld", "Set name of game to connect to.")
 	h := flag.String("h", "discworld.atuin.net", "Set host to connect to.")
@@ -24,17 +27,12 @@ func main() {
 
 	cfg := &config{*g, *h, *p}
 
-	c, err := gotelnet.Dial(fmt.Sprintf("%s:%d", cfg.Host, cfg.Port))
+	var err error
+	conn, err = gotelnet.Dial(fmt.Sprintf("%s:%d", cfg.Host, cfg.Port))
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer c.Close()
-
-	/*
-		go sendHandler(c)
-
-
-	*/
+	defer conn.Close()
 
 	gui, err := gocui.NewGui(gocui.OutputNormal)
 	if err != nil {
@@ -44,28 +42,11 @@ func main() {
 
 	gui.SetManagerFunc(uiLayout)
 
-	mView, err := gui.View(vMain)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Fprint(mView, "test")
-
-	go recvHandler(mView, recv)
-	go func() {
-		bufInput := bufio.NewReader(c)
-		for {
-			str, _ := bufInput.ReadString('\n')
-			recv <- str
-		}
-	}()
-
-	if err := gui.SetKeybinding("", gocui.KeyCtrlC, gocui.ModNone, uiQuit); err != nil {
+	if err := uiKeybindings(gui); err != nil {
 		log.Fatal(err)
 	}
 
 	if err := gui.MainLoop(); err != nil && err != gocui.ErrQuit {
 		log.Fatal(err)
 	}
-
 }

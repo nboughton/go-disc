@@ -1,18 +1,17 @@
 package main
 
 import (
-	"io"
-	"log"
-	//"github.com/nboughton/go-utils/input"
+	"strings"
+
+	"github.com/jroimartin/gocui"
 )
 
-var send = make(chan string)
+func send(g *gocui.Gui, v *gocui.View) error {
+	line := strings.TrimSpace(v.Buffer())
 
-func sendHandler(s chan string, w io.Writer) {
-	for str := range s {
-		//str := input.ReadLine()
-		if _, err := w.Write([]byte(str + "\n")); err != nil {
-			log.Println("SEND ERR:", err)
-		}
+	if _, err := conn.Write([]byte(line + "\n")); err != nil {
+		return err
 	}
+
+	return nil
 }

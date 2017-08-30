@@ -1,18 +1,20 @@
 package main
 
 import (
-	"fmt"
-	"log"
-
-	"github.com/jroimartin/gocui"
+	"bufio"
+	"io"
 )
 
-var recv = make(chan string)
+func recvChan(c io.Reader) chan string {
+	r := make(chan string)
 
-func recvHandler(v *gocui.View, r chan string) {
-	for d := range r {
-		if _, err := fmt.Fprint(v, d); err != nil {
-			log.Println("RECV ERR:", err)
+	go func() {
+		bufInput := bufio.NewReader(c)
+		for {
+			str, _ := bufInput.ReadString('\n')
+			r <- str
 		}
-	}
+	}()
+
+	return r
 }
