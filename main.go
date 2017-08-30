@@ -27,6 +27,7 @@ func main() {
 
 	cfg := &config{*g, *h, *p}
 
+	// Initialise connection
 	var err error
 	conn, err = gotelnet.Dial(fmt.Sprintf("%s:%d", cfg.Host, cfg.Port))
 	if err != nil {
@@ -34,20 +35,24 @@ func main() {
 	}
 	defer conn.Close()
 
+	// Initialise gui
 	gui, err := gocui.NewGui(gocui.OutputNormal)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer gui.Close()
 
+	// Set layout manager
 	gui.SetManagerFunc(uiLayout)
 
+	// Set keybindings
 	if err := uiKeybindings(gui); err != nil {
 		log.Fatal(err)
 	}
 
 	go recv(gui, conn)
 
+	// Run loop
 	if err := gui.MainLoop(); err != nil && err != gocui.ErrQuit {
 		log.Fatal(err)
 	}
