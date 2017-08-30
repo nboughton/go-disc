@@ -15,9 +15,12 @@ const (
 func uiLayout(g *gocui.Gui) error {
 	maxX, maxY := g.Size()
 
-	if _, err := g.SetView(vLeftSide, -1, -1, int(0.2*float32(maxX)), maxY-5); err != nil &&
-		err != gocui.ErrUnknownView {
-		return err
+	if v, err := g.SetView(vLeftSide, -1, -1, int(0.2*float32(maxX)), maxY-5); err != nil {
+		if err != gocui.ErrUnknownView {
+			return err
+		}
+
+		v.Title = "Map"
 	}
 
 	if v, err := g.SetView(vMain, int(0.2*float32(maxX)), -1, maxX, maxY-5); err != nil {
@@ -26,6 +29,7 @@ func uiLayout(g *gocui.Gui) error {
 		}
 
 		// Set some view paramters
+		v.Title = "Main"
 		v.Autoscroll = true
 		v.Wrap = true
 
@@ -39,6 +43,7 @@ func uiLayout(g *gocui.Gui) error {
 		}
 
 		// View settings
+		v.Title = "Input"
 		v.Editable = true
 		v.Wrap = true
 
