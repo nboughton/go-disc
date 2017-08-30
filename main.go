@@ -50,8 +50,7 @@ func main() {
 func sendHandler(w io.Writer) {
 	for {
 		str := input.ReadLine()
-		_, err := w.Write([]byte(str + "\n"))
-		if err != nil {
+		if _, err := w.Write([]byte(str + "\n")); err != nil {
 			log.Println("SEND ERR:", err)
 		}
 	}
@@ -59,6 +58,8 @@ func sendHandler(w io.Writer) {
 
 func receiveHandler(r chan string) {
 	for d := range r {
-		fmt.Print(d)
+		if _, err := fmt.Print(d); err != nil {
+			log.Println("RECV ERR:", err)
+		}
 	}
 }
