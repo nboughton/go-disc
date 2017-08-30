@@ -4,12 +4,10 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	"io"
 	"log"
 
-	"github.com/nboughton/go-utils/input"
+	"github.com/jroimartin/gocui"
 	"github.com/stesla/gotelnet"
-	//"github.com/jroimartin/gocui"
 )
 
 type config struct {
@@ -17,11 +15,6 @@ type config struct {
 	Host string
 	Port int
 }
-
-var (
-	send    = make(chan string)
-	receive = make(chan string)
-)
 
 func main() {
 	g := flag.String("g", "Discworld", "Set name of game to connect to.")
@@ -37,29 +30,42 @@ func main() {
 	}
 	defer c.Close()
 
-	go receiveHandler(receive)
-	go sendHandler(c)
+	/*
+		go sendHandler(c)
 
-	bufInput := bufio.NewReader(c)
-	for {
-		str, _ := bufInput.ReadString('\n')
-		receive <- str
+
+	*/
+
+	gui, err := gocui.NewGui(gocui.OutputNormal)
+	if err != nil {
+		log.Fatal(err)
 	}
-}
+	defer gui.Close()
 
-func sendHandler(w io.Writer) {
-	for {
-		str := input.ReadLine()
-		if _, err := w.Write([]byte(str + "\n")); err != nil {
-			log.Println("SEND ERR:", err)
+	gui.SetManagerFunc(uiLayout)
+
+	mView, err := gui.View(vMain)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Fprint(mView, "test")
+
+	go recvHandler(mView, recv)
+	go func() {
+		bufInput := bufio.NewReader(c)
+		for {
+			str, _ := bufInput.ReadString('\n')
+			recv <- str
 		}
-	}
-}
+	}()
 
-func receiveHandler(r chan string) {
-	for d := range r {
-		if _, err := fmt.Print(d); err != nil {
-			log.Println("RECV ERR:", err)
-		}
+	if err := gui.SetKeybinding("", gocui.KeyCtrlC, gocui.ModNone, uiQuit); err != nil {
+		log.Fatal(err)
 	}
+
+	if err := gui.MainLoop(); err != nil && err != gocui.ErrQuit {
+		log.Fatal(err)
+	}
+
 }
