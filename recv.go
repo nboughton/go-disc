@@ -1,5 +1,6 @@
 package main
 
+/*
 import (
 	"bufio"
 	"fmt"
@@ -9,7 +10,6 @@ import (
 )
 
 func recv(g *gocui.Gui, c io.Reader) error {
-	bufInput := bufio.NewScanner(c)
 
 	for bufInput.Scan() {
 		g.Update(func(g *gocui.Gui) error {
@@ -25,3 +25,4 @@ func recv(g *gocui.Gui, c io.Reader) error {
 
 	return nil
 }
+*/

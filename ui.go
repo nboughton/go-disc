@@ -35,6 +35,13 @@ func uiLayout(g *gocui.Gui) error {
 
 		// Opening Message
 		fmt.Fprintln(v, "Welcome to go-disc")
+
+		go func() {
+			for {
+				str, _ := dataIn.ReadString('\n')
+				fmt.Fprint(v, str+"\n")
+			}
+		}()
 	}
 
 	if v, err := g.SetView(vInput, -1, maxY-5, maxX, maxY); err != nil {
