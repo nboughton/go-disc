@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 
 	"github.com/nboughton/go-utils/input"
@@ -36,17 +37,28 @@ func main() {
 	}
 	defer c.Close()
 
-	read, write := bufio.NewReader(c), bufio.NewWriter(c)
+	go receiveHandler(receive)
+	go sendHandler(c)
 
-	go func() {
-		for {
-			l := input.ReadLine()
-			write.WriteString(l + "\n")
-		}
-	}()
-
+	bufInput := bufio.NewReader(c)
 	for {
-		str, _ := read.ReadString('\n')
-		fmt.Print(str)
+		str, _ := bufInput.ReadString('\n')
+		receive <- str
+	}
+}
+
+func sendHandler(w io.Writer) {
+	for {
+		str := input.ReadLine()
+		_, err := w.Write([]byte(str + "\n"))
+		if err != nil {
+			log.Println("SEND ERR:", err)
+		}
+	}
+}
+
+func receiveHandler(r chan string) {
+	for d := range r {
+		fmt.Print(d)
 	}
 }
