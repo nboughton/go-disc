@@ -4,8 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"log"
-	"os"
 	"sync"
 
 	"github.com/jroimartin/gocui"
@@ -18,12 +16,6 @@ var (
 func recv(g *gocui.Gui, c io.Reader) {
 	b := bufio.NewReader(c)
 
-	f, err := os.Create(os.Getenv("HOME") + "/raw_out.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer f.Close()
-
 	for {
 		mu.Lock()
 		str, _ := b.ReadString('\n')
@@ -35,8 +27,7 @@ func recv(g *gocui.Gui, c io.Reader) {
 				return err
 			}
 
-			fmt.Fprint(v, "["+str+"]")
-			fmt.Fprint(f, str)
+			fmt.Fprintf(v, "%q\n", str)
 
 			return nil
 		})
