@@ -1,7 +1,6 @@
 package main
 
 import (
-	//"bufio"
 	"flag"
 	"fmt"
 	"log"
@@ -18,7 +17,6 @@ type config struct {
 
 var (
 	conn gotelnet.Conn
-	//recvChan = make(chan string)
 )
 
 func main() {
@@ -33,14 +31,14 @@ func main() {
 	var err error
 	conn, err = gotelnet.Dial(fmt.Sprintf("%s:%d", cfg.Host, cfg.Port))
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("INIT TELNET ERR:", err)
 	}
 	defer conn.Close()
 
 	// Initialise gui
 	gui, err := gocui.NewGui(gocui.OutputNormal)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("INIT GUI ERR:", err)
 	}
 	defer gui.Close()
 
@@ -49,11 +47,14 @@ func main() {
 
 	// Set keybindings
 	if err := uiKeybindings(gui); err != nil {
-		log.Fatal(err)
+		log.Fatal("KBDG ERR:", err)
 	}
+
+	// Set up receiver from mud server
+	go recv(gui, conn)
 
 	// Run loop
 	if err := gui.MainLoop(); err != nil && err != gocui.ErrQuit {
-		log.Fatal(err)
+		log.Fatal("GUI ERR:", err)
 	}
 }

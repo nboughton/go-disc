@@ -1,28 +1,33 @@
 package main
 
-/*
 import (
 	"bufio"
 	"fmt"
-	"io"
+	"sync"
 
 	"github.com/jroimartin/gocui"
+	"github.com/stesla/gotelnet"
 )
 
-func recv(g *gocui.Gui, c io.Reader) error {
+var mu sync.Mutex
 
-	for bufInput.Scan() {
+func recv(g *gocui.Gui, c gotelnet.Conn) {
+	b := bufio.NewReader(c)
+	for {
+		mu.Lock()
+		str, _ := b.ReadString('\n')
+		mu.Unlock()
+
 		g.Update(func(g *gocui.Gui) error {
 			v, err := g.View(vMain)
 			if err != nil {
 				return err
 			}
 
-			fmt.Fprint(v, bufInput.Text())
+			fmt.Fprint(v, str)
+			//fmt.Print(str)
 			return nil
 		})
-	}
 
-	return nil
+	}
 }
-*/
