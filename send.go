@@ -13,6 +13,11 @@ func send(g *gocui.Gui, v *gocui.View) error {
 		return err
 	}
 
+	if line == "quit" {
+		conn.Close()
+		return gocui.ErrQuit
+	}
+
 	v.Clear()
 	v.SetOrigin(0, 0)
 	v.SetCursor(0, 0)
