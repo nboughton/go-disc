@@ -43,6 +43,8 @@ func main() {
 	}
 	defer g.Close()
 
+	g.Cursor = true
+
 	// Set layout manager
 	g.SetManagerFunc(uiLayout)
 
