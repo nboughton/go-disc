@@ -18,7 +18,7 @@ var (
 func recv(g *gocui.Gui, c io.Reader) {
 	b := bufio.NewReader(c)
 
-	f, err := os.Create("/home/nick/raw_out.txt")
+	f, err := os.Create(os.Getenv("HOME") + "/raw_out.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
