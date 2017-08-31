@@ -3,15 +3,15 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"sync"
 
 	"github.com/jroimartin/gocui"
-	"github.com/stesla/gotelnet"
 )
 
 var mu sync.Mutex
 
-func recv(gui *gocui.Gui, c gotelnet.Conn) {
+func recv(gui *gocui.Gui, c io.Reader) {
 	b := bufio.NewReader(c)
 	for {
 		mu.Lock()
@@ -25,6 +25,8 @@ func recv(gui *gocui.Gui, c gotelnet.Conn) {
 			}
 
 			fmt.Fprint(v, str)
+			//v.Write([]byte(str))
+			//fmt.Print(str)
 			return nil
 		})
 	}

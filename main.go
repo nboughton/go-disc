@@ -11,22 +11,23 @@ import (
 )
 
 type config struct {
-	Game string
-	Host string
-	Port int
+	Session string
+	Host    string
+	Port    int
 }
 
 var (
 	conn gotelnet.Conn
+	cfg  *config
 )
 
 func main() {
-	g := flag.String("g", "Discworld", "Set name of game to connect to.")
+	s := flag.String("s", "Discworld", "Set name of the session.")
 	h := flag.String("h", "discworld.atuin.net", "Set host to connect to.")
 	p := flag.Int("p", 4242, "Set port to connect to.")
 	flag.Parse()
 
-	cfg := &config{*g, *h, *p}
+	cfg = &config{*s, *h, *p}
 
 	// Initialise connection
 	var err error
@@ -67,6 +68,8 @@ func main() {
 				}
 
 				fmt.Fprint(v, str)
+				//v.Write([]byte(str))
+				//fmt.Print(str)
 				return nil
 			})
 		}
