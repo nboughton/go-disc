@@ -31,8 +31,8 @@ func uiLayout(g *gocui.Gui) error {
 
 		// Set some view paramters
 		v.Title = cfg.Session
-		//v.Autoscroll = true
-		//v.Wrap = true
+		v.Autoscroll = true
+		v.Wrap = true
 		v.Frame = true
 	}
 

@@ -35,9 +35,11 @@ func recv(g *gocui.Gui, c io.Reader) {
 				return err
 			}
 
-			fmt.Fprint(v, str)
+			fmt.Fprint(v, "["+str+"]")
 			fmt.Fprint(f, str)
+
 			return nil
 		})
+
 	}
 }
