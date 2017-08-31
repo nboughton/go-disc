@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
 	"log"
@@ -37,46 +36,26 @@ func main() {
 	}
 	defer conn.Close()
 
-	// Initialise gui
-	gui, err := gocui.NewGui(gocui.OutputNormal)
+	// Initialise g
+	g, err := gocui.NewGui(gocui.Output256)
 	if err != nil {
 		log.Fatal("INIT GUI ERR:", err)
 	}
-	defer gui.Close()
+	defer g.Close()
 
 	// Set layout manager
-	gui.SetManagerFunc(uiLayout)
+	g.SetManagerFunc(uiLayout)
 
 	// Set keybindings
-	if err := uiKeybindings(gui); err != nil {
+	if err := uiKeybindings(g); err != nil {
 		log.Fatal("KBDG ERR:", err)
 	}
 
 	// Set up receiver from mud server
-	//go recv(gui, conn)
-	go func() {
-		b := bufio.NewReader(conn)
-		for {
-			mu.Lock()
-			str, _ := b.ReadString('\n')
-			mu.Unlock()
-
-			gui.Update(func(g *gocui.Gui) error {
-				v, err := g.View(vMain)
-				if err != nil {
-					return err
-				}
-
-				fmt.Fprint(v, str)
-				//v.Write([]byte(str))
-				//fmt.Print(str)
-				return nil
-			})
-		}
-	}()
+	go recv(g, conn)
 
 	// Run loop
-	if err := gui.MainLoop(); err != nil && err != gocui.ErrQuit {
+	if err := g.MainLoop(); err != nil && err != gocui.ErrQuit {
 		log.Fatal("GUI ERR:", err)
 	}
 }

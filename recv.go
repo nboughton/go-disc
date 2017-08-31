@@ -4,29 +4,39 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"log"
+	"os"
 	"sync"
 
 	"github.com/jroimartin/gocui"
 )
 
-var mu sync.Mutex
+var (
+	mu sync.Mutex
+)
 
-func recv(gui *gocui.Gui, c io.Reader) {
+func recv(g *gocui.Gui, c io.Reader) {
 	b := bufio.NewReader(c)
+
+	f, err := os.Create("/home/nick/raw_out.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+
 	for {
 		mu.Lock()
 		str, _ := b.ReadString('\n')
 		mu.Unlock()
 
-		gui.Update(func(g *gocui.Gui) error {
+		g.Update(func(g *gocui.Gui) error {
 			v, err := g.View(vMain)
 			if err != nil {
 				return err
 			}
 
 			fmt.Fprint(v, str)
-			//v.Write([]byte(str))
-			//fmt.Print(str)
+			fmt.Fprint(f, str)
 			return nil
 		})
 	}
