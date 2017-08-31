@@ -15,6 +15,7 @@ func send(g *gocui.Gui, v *gocui.View) error {
 
 	v.Clear()
 	v.SetOrigin(0, 0)
+	v.SetCursor(0, 0)
 
 	return nil
 }

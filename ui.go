@@ -1,9 +1,6 @@
 package main
 
 import (
-	//"bufio"
-	"fmt"
-
 	"github.com/jroimartin/gocui"
 )
 
@@ -31,11 +28,8 @@ func uiLayout(g *gocui.Gui) error {
 
 		// Set some view paramters
 		v.Title = "Main"
-		//v.Autoscroll = true
+		v.Autoscroll = true
 		v.Wrap = true
-
-		// Opening Message
-		fmt.Fprintln(v, "Welcome to go-disc")
 	}
 
 	if v, err := g.SetView(vInput, -1, maxY-5, maxX, maxY); err != nil {
@@ -47,6 +41,7 @@ func uiLayout(g *gocui.Gui) error {
 		v.Title = "Input"
 		v.Editable = true
 		v.Wrap = true
+		v.Highlight = true
 
 		// Set focus on input
 		if _, err := g.SetCurrentView(vInput); err != nil {
