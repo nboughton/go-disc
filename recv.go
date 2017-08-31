@@ -9,17 +9,15 @@ import (
 	"github.com/jroimartin/gocui"
 )
 
-var (
-	mu sync.Mutex
-)
+var mu sync.Mutex
 
 func recv(g *gocui.Gui, c io.Reader) {
 	b := bufio.NewReader(c)
 
 	for {
 		mu.Lock()
-		str, _, _ := b.ReadLine()
-		mu.Unlock()
+		line, _, _ := b.ReadLine()
+		
 
 		g.Update(func(g *gocui.Gui) error {
 			v, err := g.View(vMain)
@@ -27,10 +25,10 @@ func recv(g *gocui.Gui, c io.Reader) {
 				return err
 			}
 
-			fmt.Fprintf(v, "%s\n", str)
+			fmt.Fprintf(v, "%s\n", line)
+			mu.Unlock()
 
 			return nil
 		})
-
 	}
 }
