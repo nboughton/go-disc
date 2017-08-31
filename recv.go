@@ -18,7 +18,7 @@ func recv(g *gocui.Gui, c io.Reader) {
 
 	for {
 		mu.Lock()
-		str, _ := b.ReadString('\n')
+		str, _, _ := b.ReadLine()
 		mu.Unlock()
 
 		g.Update(func(g *gocui.Gui) error {
@@ -27,7 +27,7 @@ func recv(g *gocui.Gui, c io.Reader) {
 				return err
 			}
 
-			fmt.Fprintf(v, "%q\n", str)
+			fmt.Fprintf(v, "%s\n", str)
 
 			return nil
 		})
