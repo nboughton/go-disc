@@ -1,3 +1,6 @@
+// Package complete is an awful tab completion lib that I hacked together
+// for convenience. It WILL be rewritten. In its current state it's pretty
+// bad.
 package complete
 
 import (
