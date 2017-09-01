@@ -4,8 +4,8 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"log"
-	"os"
+	//"log"
+	//"os"
 	"strings"
 	"sync"
 
@@ -25,11 +25,13 @@ func listen(g *gocui.Gui, c io.Reader) {
 	b := bufio.NewReader(c)
 
 	// Debugging, lets write raw data to text
-	f, err := os.Create("go-disc.log")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer f.Close()
+	/*
+		f, err := os.Create("go-disc.log")
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer f.Close()
+	*/
 
 	// Loop input
 	for {
@@ -52,7 +54,7 @@ func listen(g *gocui.Gui, c io.Reader) {
 			fmt.Fprintf(v, "%s\n", line)
 
 			// Print to debug log
-			fmt.Fprintf(f, "%s\n", line)
+			//fmt.Fprintf(f, "%s\n", line)
 
 			mu.Unlock()
 			return nil
