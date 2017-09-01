@@ -9,11 +9,8 @@ import (
 )
 
 func input(g *gocui.Gui, v *gocui.View) error {
-	// Trim buffer and do nothing if line is empty
+	// Trim buffer
 	line := strings.TrimSpace(v.Buffer())
-	if line == "" {
-		return nil
-	}
 
 	// Write to server connection
 	if err := send(conn, line); err != nil {
@@ -40,7 +37,8 @@ func input(g *gocui.Gui, v *gocui.View) error {
 	v.SetCursor(0, 0)
 
 	// Append line to cmd bufer and set current index to last line
-	if logToCmdBuffer {
+	// Ignore blank returns
+	if logToCmdBuffer && line != "" {
 		cmdBuffer = append(cmdBuffer, line)
 		cmdIdx = len(cmdBuffer)
 	}

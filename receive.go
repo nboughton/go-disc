@@ -51,7 +51,7 @@ func listen(g *gocui.Gui, c io.Reader) {
 				return err
 			}
 
-			fmt.Fprintf(v, "%s\n", line)
+			fmt.Fprintln(v, line)
 
 			// Print to debug log
 			//fmt.Fprintf(f, "%s\n", line)

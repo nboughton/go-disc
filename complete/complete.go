@@ -12,18 +12,18 @@ var (
 
 // Data contains the reference data for a tab complete
 type Data struct {
-	index map[string]bool
+	index map[string]int
 }
 
 // New returns a new completion object.
 func New() *Data {
-	idx := make(map[string]bool)
+	idx := make(map[string]int)
 	return &Data{idx}
 }
 
 // Add adds a string to the dictionary
 func (d *Data) Add(str string) {
-	d.index[str] = true
+	d.index[str]++
 }
 
 // Tab pseudo randomly attempts to get a string
