@@ -11,13 +11,12 @@ import (
 
 var mu sync.Mutex
 
-func recv(g *gocui.Gui, c io.Reader) {
+func listen(g *gocui.Gui, c io.Reader) {
 	b := bufio.NewReader(c)
 
 	for {
 		mu.Lock()
 		line, _, _ := b.ReadLine()
-		
 
 		g.Update(func(g *gocui.Gui) error {
 			v, err := g.View(vMain)
@@ -31,4 +30,13 @@ func recv(g *gocui.Gui, c io.Reader) {
 			return nil
 		})
 	}
+}
+
+func copyLine(line []byte) []byte {
+	newLine := make([]byte, len(line))
+	for i := 0; i < len(line); i++ {
+		newLine[i] = line[i]
+	}
+
+	return newLine
 }

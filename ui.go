@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/jroimartin/gocui"
 )
 
@@ -8,6 +10,11 @@ const (
 	vMain     = "mainview"
 	vLeftSide = "leftsideview"
 	vInput    = "inputview"
+)
+
+var (
+	cmdBuffer []string
+	cmdIdx    int
 )
 
 func uiLayout(g *gocui.Gui) error {
@@ -24,25 +31,23 @@ func uiLayout(g *gocui.Gui) error {
 	*/
 
 	//if v, err := g.SetView(vMain, int(0.2*float32(maxX)), 0, maxX, maxY); err != nil {
-	if v, err := g.SetView(vMain, 0, 0, maxX-1, maxY-4); err != nil {
+	if v, err := g.SetView(vMain, -1, -1, maxX, maxY-2); err != nil {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
 
 		// Set some view paramters
-		v.Title = cfg.Session
+		//v.Title = cfg.Session
 		v.Autoscroll = true
 		v.Wrap = true
-		v.Frame = true
 	}
 
-	if v, err := g.SetView(vInput, 0, maxY-3, maxX-1, maxY-1); err != nil {
+	if v, err := g.SetView(vInput, -1, maxY-2, maxX, maxY); err != nil {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
 
 		// View settings
-		v.Title = "Input"
 		v.Editable = true
 		v.Wrap = true
 		v.Highlight = true
@@ -62,11 +67,42 @@ func uiKeybindings(g *gocui.Gui) error {
 	}
 
 	// Submit a line
-	if err := g.SetKeybinding(vInput, gocui.KeyEnter, gocui.ModNone, send); err != nil {
+	if err := g.SetKeybinding(vInput, gocui.KeyEnter, gocui.ModNone, input); err != nil {
+		return err
+	}
+
+	// Scroll cmd buffer
+	if err := g.SetKeybinding(vInput, gocui.KeyArrowUp, gocui.ModNone,
+		func(g *gocui.Gui, v *gocui.View) error {
+			scrollCmdHistory(v, -1)
+			return nil
+		}); err != nil {
+		return err
+	}
+
+	if err := g.SetKeybinding(vInput, gocui.KeyArrowDown, gocui.ModNone,
+		func(g *gocui.Gui, v *gocui.View) error {
+			scrollCmdHistory(v, 1)
+			return nil
+		}); err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func scrollCmdHistory(v *gocui.View, dy int) {
+	i := cmdIdx + dy
+	switch {
+	case i >= 0 && i < len(cmdBuffer):
+		cmdIdx = i
+
+		v.Clear()
+		fmt.Fprintf(v, "%v", cmdBuffer[cmdIdx])
+	case i == len(cmdBuffer):
+		v.Clear()
+		v.SetOrigin(0, 0)
+	}
 }
 
 func uiQuit(g *gocui.Gui, v *gocui.View) error {

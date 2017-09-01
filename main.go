@@ -54,7 +54,7 @@ func main() {
 	}
 
 	// Set up receiver from mud server
-	go recv(g, conn)
+	go listen(g, conn)
 
 	// Run loop
 	if err := g.MainLoop(); err != nil && err != gocui.ErrQuit {
