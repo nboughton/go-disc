@@ -10,12 +10,12 @@ import (
 	"sync"
 
 	"github.com/jroimartin/gocui"
-	re "github.com/nboughton/go-utils/regex/common"
+	//re "github.com/nboughton/go-utils/regex/common"
 )
 
 var (
-	mu     sync.Mutex
-	secret = true
+	mu             sync.Mutex
+	logToCmdBuffer bool
 )
 
 func listen(g *gocui.Gui, c io.Reader) {
@@ -36,9 +36,9 @@ func listen(g *gocui.Gui, c io.Reader) {
 		// ReadLine('\n'), ReadByte('\n') all don't produce
 		// output that prints properly into the view window
 		var (
-			l, _, _    = b.ReadLine()
-			line       = parseRecvLine(l)
-			lineNoANSI = re.ANSI.ReplaceAllLiteralString(line, "")
+			l, _, _ = b.ReadLine()
+			line    = parseRecvLine(l)
+			//lineNoANSI = re.ANSI.ReplaceAllLiteralString(line, "")
 		)
 
 		// Print new data to view(s)
@@ -51,7 +51,7 @@ func listen(g *gocui.Gui, c io.Reader) {
 			fmt.Fprintf(v, "%s\n", line)
 
 			// Print to debug log
-			fmt.Fprintf(f, "%s\n", lineNoANSI)
+			fmt.Fprintf(f, "%s\n", line)
 
 			mu.Unlock()
 			return nil
@@ -66,7 +66,7 @@ func parseRecvLine(line []byte) string {
 	// Dont allow logging to the cmdBuffer until
 	// after a user is logged in.
 	if strings.HasPrefix(l, "You last logged in from") {
-		secret = false
+		logToCmdBuffer = true
 	}
 
 	return l

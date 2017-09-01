@@ -45,46 +45,58 @@ not enough room here to draw it.
 Enter password: 
 
 You last logged in from ::ffff:193.62.204.12 (::ffff:193.62.204.12) and are currently logged in from ::ffff:193.62.204.12 (::ffff:193.62.204.12).
-
-     **************************************************************
-     * It is your responsibility to know and adhere to the rules. *
-     * If you are not sure what they are read 'help rules'.       *
-     * Ignorance of the rules will not be accepted as a defence.  *
-     **************************************************************
-
-
-Queued command: look
-The religious instructor asks: Lovely night isn't it, Brother Grelk?
-     @+     This is a small, grim-looking room with rough walls of a dark grey
-            stone.  The gilded velvet divan against the south wall seems
-            strangely out of place, but at least it'll be warmer than the
-            floor.  A small sign is attached to the wall above the divan and an
-            iron door in the east wall leads out to the temple.
-            There is one obvious exit: east.
-            A religious instructor is standing here.
-            A bulletin board [ 16 notes ] is mounted on one wall, a membership
-            rota is nailed to the wall and a small sign is here.
-
-Inventory regeneration complete.
-(One) Aimi wisps: especially considering we dont neccessarily know the
-     development timeline
-(One) Aimi wisps: e.g. was it the same creator, was it in roughly the same era
-     or did they change their mind later when making squirrels, etc
-(One) Huupatux wisps: which makes it one of the dumbest things i've yet to
-     discover about this game.
-(One) Aimi wisps: everything seems worse when it affects you directly but
-     honestly it really would not be that surprising or out of character for a
-     game developed the way this is :)
-The religious instructor falls flat on his face and spends some time talking to
-the ground.
-The religious instructor stands up.
-The religious instructor brushes his clothes clean.
-(One) Kaiju wisps: anyone up for a group?
-(One) Aimi wisps: i find it a bit funny your idea of "one of the dumbest
-     things" is "squirrels spawn during the day" :p
-In the distance to the north, Old Tom, the tongueless and magical octiron bell
-     of Unseen University, tolls four sonorous silences.
-The religious instructor recites a prayer.
-The religious instructor calls upon Sek for protection.
-Nearby to the west, the big bronze gong in the Temple of Small Gods bongs four
-     times.
+[39;49m[0;10m
+     **************************************************************[39;49m[0;10m
+     * It is your responsibility to know and adhere to the rules. *[39;49m[0;10m
+     * If you are not sure what they are read 'help rules'.       *[39;49m[0;10m
+     * Ignorance of the rules will not be accepted as a defence.  *[39;49m[0;10m
+     **************************************************************[39;49m[0;10m
+[39;49m[0;10m
+[39;49m[0;10m
+Queued command: look[39;49m[0;10m
+[36mThe religious instructor asks: Lovely night isn't it, Brother Grelk?[39;49m[0;10m[39;49m[0;10m
+     [39;49m[0;10m[1;33m@[39;49m[0;10m[31m+[39;49m[0;10m     [39;49m[0;10mThis is a small, grim-looking room with rough walls of a dark grey[39;49m[0;10m
+            stone.  The gilded velvet divan against the south wall seems[39;49m[0;10m
+            strangely out of place, but at least it'll be warmer than the[39;49m[0;10m
+            floor.  A small sign is attached to the wall above the divan and an[39;49m[0;10m
+            iron door in the east wall leads out to the temple.[39;49m[0;10m
+            [32mThere is one obvious exit: east.[39;49m[0;10m[39;49m[0;10m
+            A religious instructor is standing here.[39;49m[0;10m
+            A bulletin board [ 16 notes ] is mounted on one wall, a membership[39;49m[0;10m
+            rota is nailed to the wall and a small sign is here.[39;49m[0;10m[39;49m[0;10m
+[39;49m[0;10m
+[36mInventory regeneration complete.[39;49m[0;10m[39;49m[0;10m
+You open the iron door.[39;49m[0;10m
+    [39;49m[0;10m-[39;49m[0;10m[32m&[39;49m[0;10m      [39;49m[0;10mThis central part of Sek's temple is the site of the High Altar, a[39;49m[0;10m
+     [39;49m[0;10m|[39;49m[0;10m      [39;49m[0;10mflat slab of mostly black stone at the base of a shallow[39;49m[0;10m
+    [39;49m[0;10m-[39;49m[0;10m[36m*[39;49m[0;10m      [39;49m[0;10mdepression.  To the south is the huge statue of Sek himself and to[39;49m[0;10m
+     [39;49m[0;10m|[39;49m[0;10m      [39;49m[0;10mthe north is the relative safety of the entrance hall.  There is an[39;49m[0;10m
+   [39;49m[0;10m[32m$[39;49m[0;10m-[39;49m[0;10m[1;33m@[39;49m[0;10m      [39;49m[0;10miron door in the bare stone of the west wall.[39;49m[0;10m
+     [39;49m[0;10m|[39;49m[0;10m      [39;49m[0;10m[32mThere are three obvious exits: north, south and west.[39;49m[0;10m[39;49m[0;10m
+     [39;49m[0;10m[36m*[39;49m[0;10m-[39;49m[0;10m     [39;49m[0;10m
+You close the iron door.[39;49m[0;10m
+You open the iron door.[39;49m[0;10m
+       [39;49m[0;10m|[39;49m[0;10m    [39;49m[0;10mThis is a small, grim-looking room with rough walls of a dark grey[39;49m[0;10m
+     [39;49m[0;10m[1;33m@[39;49m[0;10m-[39;49m[0;10m[36m*[39;49m[0;10m    [39;49m[0;10mstone.  The gilded velvet divan against the south wall seems[39;49m[0;10m
+       [39;49m[0;10m|[39;49m[0;10m    [39;49m[0;10mstrangely out of place, but at least it'll be warmer than the[39;49m[0;10m
+            floor.  A small sign is attached to the wall above the divan and an[39;49m[0;10m
+            iron door in the east wall leads out to the temple.[39;49m[0;10m
+            [32mThere is one obvious exit: east.[39;49m[0;10m[39;49m[0;10m
+            A religious instructor is standing here.[39;49m[0;10m
+            A bulletin board [ 16 notes ] is mounted on one wall, a membership[39;49m[0;10m
+            rota is nailed to the wall and a small sign is here.[39;49m[0;10m[39;49m[0;10m
+You close the iron door.[39;49m[0;10m
+[36mThe religious instructor asks: Lovely night isn't it, Brother Grelk?[39;49m[0;10m[39;49m[0;10m
+======SKILLS=======Cur/Max==For Next==========================================
+faith..............  81/ 50  mastered  | | | target....... 100/300   4966 xp
+| rituals.......... 104/ 50  mastered  | | misc........... 117/ 50  mastered
+| | offensive...... 103/ 50  mastered  | | | area......... 100/300   4966 xp
+| | | area......... 101/300   4999 xp  | | | self......... 100/300   4966 xp
+| | | target....... 105/300   5437 xp  | | | target....... 152/300  10536 xp
+| | defensive...... 100/ 50  mastered  | | special........ 100/300   4966 xp
+| | | area......... 100/300   4966 xp  | items............  40/ 50   2740 xp
+| | | self......... 101/300   4999 xp  | | rod............  40/300   1370 xp
+| | | target....... 100/300   4966 xp  | | scroll.........  40/300   1370 xp
+| | curing......... 100/ 50  mastered  | points...........  99/300   4933 xp
+| | | self......... 100/300   4966 xp  
+======================> You have 27236 points to spend <======================

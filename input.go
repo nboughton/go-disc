@@ -37,7 +37,7 @@ func input(g *gocui.Gui, v *gocui.View) error {
 	v.SetCursor(0, 0)
 
 	// Append line to cmd bufer and set current index to last line
-	if !secret {
+	if logToCmdBuffer {
 		cmdBuffer = append(cmdBuffer, line)
 		cmdIdx = len(cmdBuffer)
 	}
