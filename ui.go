@@ -127,9 +127,8 @@ func tabComplete(g *gocui.Gui, v *gocui.View) error {
 	tab, _ := dict.Tab(str)
 
 	// Catch the current line, zero the content and print the line with the completion
-	b := line[:x]
 	zeroLine(v)
-	fmt.Fprintf(v, "%s%s", b, tab)
+	fmt.Fprintf(v, "%s%s", line[:x], tab)
 
 	// Set cursor to its original position in case we need to tab again.
 	v.SetCursor(x, y)

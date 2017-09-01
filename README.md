@@ -7,6 +7,6 @@ go-disc is a basic MUD client built specifically for the [Discworld MUD](http://
  - [x] Editable command line in separate view
  - [ ] Password shadowing
  - [x] Scrollable command history
- - [ ] Tab autocomplete
+ - [ ] Tab completion - partially implemented
  - [ ] HP, GP, Burden meters in sidebar
  - [ ] Auto-mapping
