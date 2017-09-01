@@ -43,7 +43,9 @@ func input(g *gocui.Gui, v *gocui.View) error {
 		cmdIdx = len(cmdBuffer)
 
 		// Add it to the autocomplete dict as well
-		dict.Add(line)
+		for _, s := range strings.Fields(line) {
+			dict.Add(s)
+		}
 	}
 
 	return nil
