@@ -29,10 +29,10 @@ func (d *Data) Add(str string) {
 // Tab pseudo randomly attempts to get a string
 // from the dictionary
 func (d *Data) Tab(str string) (string, error) {
-	for key := range d.index {
-		if strings.HasPrefix(key, str) {
-			ing := strings.TrimPrefix(key, str)
-			return ing, nil
+	for word := range d.index {
+		if strings.HasPrefix(word, str) {
+			s := strings.TrimPrefix(word, str)
+			return s, nil
 		}
 	}
 

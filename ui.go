@@ -89,24 +89,50 @@ func uiKeybindings(g *gocui.Gui) error {
 	}
 
 	// Tab completion
-	if err := g.SetKeybinding(vInput, gocui.KeyTab, gocui.ModNone,
-		func(g *gocui.Gui, v *gocui.View) error {
-			x, y := v.Cursor()
-			if x > 0 {
-				x--
-			}
-			str, _ := v.Word(x, y)
-
-			//vM, _ := g.View(vMain)
-			//fmt.Fprintf(vM, "x: %v, y: %v : %v\n", x, y, str)
-
-			tab, _ := dict.Tab(str)
-			fmt.Fprintf(v, "%s", tab)
-			return nil
-		}); err != nil {
+	if err := g.SetKeybinding(vInput, gocui.KeyTab, gocui.ModNone, tabComplete); err != nil {
 		return err
 	}
 
+	return nil
+}
+
+func tabComplete(g *gocui.Gui, v *gocui.View) error {
+	// Get cursor coords
+	x, y := v.Cursor()
+
+	// We don't complete empty lines
+	if x == 0 {
+		return nil
+	}
+
+	// Extract substr of last word behind cursor point
+	line, _ := v.Line(y)
+	str := ""
+	for i := x - 1; i >= 0; i-- {
+		if line[i] == ' ' {
+			str = line[i+1 : x]
+			break
+		} else if i == 0 {
+			str = line[i:x]
+			break
+		}
+	}
+
+	// Return clear if we've come up empty handed
+	if str == "" {
+		return nil
+	}
+
+	// Attempt to get a tab
+	tab, _ := dict.Tab(str)
+
+	// Catch the current line, zero the content and print the line with the completion
+	b := line[:x]
+	zeroLine(v)
+	fmt.Fprintf(v, "%s%s", b, tab)
+
+	// Set cursor to its original position in case we need to tab again.
+	v.SetCursor(x, y)
 	return nil
 }
 
@@ -119,11 +145,16 @@ func scrollCmdHistory(v *gocui.View, dy int) {
 		v.Clear()
 		fmt.Fprintf(v, "%v", cmdBuffer[cmdIdx])
 	case i == len(cmdBuffer):
-		v.Clear()
-		v.SetOrigin(0, 0)
+		zeroLine(v)
 	}
 }
 
 func uiQuit(g *gocui.Gui, v *gocui.View) error {
 	return gocui.ErrQuit
+}
+
+func zeroLine(v *gocui.View) {
+	v.SetCursor(0, 0)
+	v.SetOrigin(0, 0)
+	v.Clear()
 }

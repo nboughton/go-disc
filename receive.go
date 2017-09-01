@@ -41,7 +41,7 @@ func listen(g *gocui.Gui, c io.Reader) {
 		// output that prints properly into the view window
 		var (
 			l, _, _ = b.ReadLine()
-			line    = parseRecvLine(l)
+			line    = handleRecvLine(l)
 		)
 
 		// Print new data to view(s)
@@ -62,7 +62,7 @@ func listen(g *gocui.Gui, c io.Reader) {
 	}
 }
 
-func parseRecvLine(line []byte) string {
+func handleRecvLine(line []byte) string {
 	// Trim unwanted characters
 	l := strings.TrimPrefix(string(line), "> ")
 
@@ -74,8 +74,7 @@ func parseRecvLine(line []byte) string {
 
 	// Add words to tab complete dict
 	lineNoANSI := re.ANSI.ReplaceAllLiteralString(l, "")
-	f := strings.Fields(lineNoANSI)
-	for _, v := range f {
+	for _, v := range strings.Fields(lineNoANSI) {
 		dict.Add(v)
 	}
 
