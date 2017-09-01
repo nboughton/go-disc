@@ -4,20 +4,44 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"log"
+	"os"
+	"strings"
 	"sync"
 
 	"github.com/jroimartin/gocui"
+	re "github.com/nboughton/go-utils/regex/common"
 )
 
-var mu sync.Mutex
+var (
+	mu     sync.Mutex
+	secret = true
+)
 
 func listen(g *gocui.Gui, c io.Reader) {
+	// Create bufio Reader for incoming data
 	b := bufio.NewReader(c)
 
+	// Debugging, lets write raw data to text
+	f, err := os.Create("go-disc.log")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+
+	// Loop input
 	for {
 		mu.Lock()
-		line, _, _ := b.ReadLine()
+		// Bizarrely the other Read* methods don't work
+		// ReadLine('\n'), ReadByte('\n') all don't produce
+		// output that prints properly into the view window
+		var (
+			l, _, _    = b.ReadLine()
+			line       = parseRecvLine(l)
+			lineNoANSI = re.ANSI.ReplaceAllLiteralString(line, "")
+		)
 
+		// Print new data to view(s)
 		g.Update(func(g *gocui.Gui) error {
 			v, err := g.View(vMain)
 			if err != nil {
@@ -25,11 +49,27 @@ func listen(g *gocui.Gui, c io.Reader) {
 			}
 
 			fmt.Fprintf(v, "%s\n", line)
-			mu.Unlock()
 
+			// Print to debug log
+			fmt.Fprintf(f, "%s\n", lineNoANSI)
+
+			mu.Unlock()
 			return nil
 		})
 	}
+}
+
+func parseRecvLine(line []byte) string {
+	// Trim unwanted characters
+	l := strings.TrimPrefix(string(line), "> ")
+
+	// Dont allow logging to the cmdBuffer until
+	// after a user is logged in.
+	if strings.HasPrefix(l, "You last logged in from") {
+		secret = false
+	}
+
+	return l
 }
 
 func copyLine(line []byte) []byte {

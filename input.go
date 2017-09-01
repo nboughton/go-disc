@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"strings"
 
@@ -16,7 +17,14 @@ func input(g *gocui.Gui, v *gocui.View) error {
 		return err
 	}
 
-	// Current handling of quit, should really have conn.Close
+	// Insert blank line into the main view
+	vM, err := g.View(vMain)
+	if err != nil {
+		return err
+	}
+	fmt.Fprintf(vM, "\n")
+
+	// Current handling of quit, should probably have conn.Close
 	// handled by receiving a CTCP disconnect in the recv func
 	if line == "quit" {
 		conn.Close()
@@ -29,8 +37,10 @@ func input(g *gocui.Gui, v *gocui.View) error {
 	v.SetCursor(0, 0)
 
 	// Append line to cmd bufer and set current index to last line
-	cmdBuffer = append(cmdBuffer, line)
-	cmdIdx = len(cmdBuffer)
+	if !secret {
+		cmdBuffer = append(cmdBuffer, line)
+		cmdIdx = len(cmdBuffer)
+	}
 
 	return nil
 }
