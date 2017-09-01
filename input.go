@@ -41,6 +41,9 @@ func input(g *gocui.Gui, v *gocui.View) error {
 	if logToCmdBuffer && line != "" {
 		cmdBuffer = append(cmdBuffer, line)
 		cmdIdx = len(cmdBuffer)
+
+		// Add it to the autocomplete dict as well
+		dict.Add(line)
 	}
 
 	return nil
