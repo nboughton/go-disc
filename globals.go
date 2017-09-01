@@ -15,6 +15,8 @@ const (
 	vMain     = "mainview"
 	vLeftSide = "leftsideview"
 	vInput    = "inputview"
+	minX      = -1
+	minY      = -1
 )
 
 var (

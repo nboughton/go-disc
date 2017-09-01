@@ -20,7 +20,7 @@ func uiLayout(g *gocui.Gui) error {
 	*/
 
 	//if v, err := g.SetView(vMain, int(0.2*float32(maxX)), 0, maxX, maxY); err != nil {
-	if v, err := g.SetView(vMain, -1, -1, maxX, maxY-2); err != nil {
+	if v, err := g.SetView(vMain, minX, minY, maxX, maxY-2); err != nil {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
@@ -31,7 +31,7 @@ func uiLayout(g *gocui.Gui) error {
 		v.Wrap = true
 	}
 
-	if v, err := g.SetView(vInput, -1, maxY-2, maxX, maxY); err != nil {
+	if v, err := g.SetView(vInput, minX, maxY-2, maxX, maxY); err != nil {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
