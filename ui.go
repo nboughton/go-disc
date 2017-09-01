@@ -88,6 +88,25 @@ func uiKeybindings(g *gocui.Gui) error {
 		return err
 	}
 
+	// Tab completion
+	if err := g.SetKeybinding(vInput, gocui.KeyTab, gocui.ModNone,
+		func(g *gocui.Gui, v *gocui.View) error {
+			x, y := v.Cursor()
+			if x > 0 {
+				x--
+			}
+			str, _ := v.Word(x, y)
+
+			//vM, _ := g.View(vMain)
+			//fmt.Fprintf(vM, "x: %v, y: %v : %v\n", x, y, str)
+
+			tab, _ := dict.Tab(str)
+			fmt.Fprintf(v, "%s", tab)
+			return nil
+		}); err != nil {
+		return err
+	}
+
 	return nil
 }
 

@@ -10,12 +10,14 @@ import (
 	"sync"
 
 	"github.com/jroimartin/gocui"
-	//re "github.com/nboughton/go-utils/regex/common"
+	tc "github.com/nboughton/go-disc/complete"
+	re "github.com/nboughton/go-utils/regex/common"
 )
 
 var (
 	mu             sync.Mutex
 	logToCmdBuffer bool
+	dict           = tc.New()
 )
 
 func listen(g *gocui.Gui, c io.Reader) {
@@ -38,7 +40,6 @@ func listen(g *gocui.Gui, c io.Reader) {
 		var (
 			l, _, _ = b.ReadLine()
 			line    = parseRecvLine(l)
-			//lineNoANSI = re.ANSI.ReplaceAllLiteralString(line, "")
 		)
 
 		// Print new data to view(s)
@@ -65,8 +66,15 @@ func parseRecvLine(line []byte) string {
 
 	// Dont allow logging to the cmdBuffer until
 	// after a user is logged in.
-	if strings.HasPrefix(l, "You last logged in from") {
+	if strings.HasPrefix(l, "You last logged in from") || strings.HasPrefix(l, "You are already playing") {
 		logToCmdBuffer = true
+	}
+
+	// Add words to tab complete dict
+	lineNoANSI := re.ANSI.ReplaceAllLiteralString(l, "")
+	f := strings.Fields(lineNoANSI)
+	for _, v := range f {
+		dict.Add(v)
 	}
 
 	return l
