@@ -55,6 +55,21 @@ func uiKeybindings(g *gocui.Gui) error {
 		return err
 	}
 
+	// home and end keys
+	if err := g.SetKeybinding(vInput, gocui.KeyHome, gocui.ModNone,
+		func(g *gocui.Gui, v *gocui.View) error {
+			return v.SetCursor(0, 0)
+		}); err != nil {
+		return err
+	}
+
+	if err := g.SetKeybinding(vInput, gocui.KeyEnd, gocui.ModNone,
+		func(g *gocui.Gui, v *gocui.View) error {
+			return v.SetCursor(len(v.Buffer())-1, 0)
+		}); err != nil {
+		return err
+	}
+
 	// Submit a line
 	if err := g.SetKeybinding(vInput, gocui.KeyEnter, gocui.ModNone, input); err != nil {
 		return err
