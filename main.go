@@ -9,17 +9,6 @@ import (
 	"github.com/stesla/gotelnet"
 )
 
-type config struct {
-	Session string
-	Host    string
-	Port    int
-}
-
-var (
-	conn gotelnet.Conn
-	cfg  *config
-)
-
 func main() {
 	s := flag.String("s", "Discworld", "Set name of the session.")
 	h := flag.String("h", "discworld.atuin.net", "Set host to connect to.")

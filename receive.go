@@ -4,34 +4,19 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	//"log"
-	//"os"
 	"strings"
 	"sync"
 
 	"github.com/jroimartin/gocui"
-	tc "github.com/nboughton/go-disc/complete"
 	re "github.com/nboughton/go-utils/regex/common"
 )
 
-var (
-	mu             sync.Mutex
-	logToCmdBuffer bool
-	dict           = tc.New()
-)
-
 func listen(g *gocui.Gui, c io.Reader) {
-	// Create bufio Reader for incoming data
-	b := bufio.NewReader(c)
-
-	// Debugging, lets write raw data to text
-	/*
-		f, err := os.Create("go-disc.log")
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer f.Close()
-	*/
+	// Create bufio Reader for incoming data and mutex
+	var (
+		b  = bufio.NewReader(c)
+		mu sync.Mutex
+	)
 
 	// Loop input
 	for {
@@ -52,10 +37,6 @@ func listen(g *gocui.Gui, c io.Reader) {
 			}
 
 			fmt.Fprintln(v, line)
-
-			// Print to debug log
-			//fmt.Fprintf(f, "%s\n", line)
-
 			mu.Unlock()
 			return nil
 		})
@@ -79,13 +60,4 @@ func handleRecvLine(line []byte) string {
 	}
 
 	return l
-}
-
-func copyLine(line []byte) []byte {
-	newLine := make([]byte, len(line))
-	for i := 0; i < len(line); i++ {
-		newLine[i] = line[i]
-	}
-
-	return newLine
 }
