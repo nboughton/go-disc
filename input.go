@@ -9,8 +9,11 @@ import (
 )
 
 func input(g *gocui.Gui, v *gocui.View) error {
-	// Trim buffer
+	// Trim buffer and do nothing if line is empty
 	line := strings.TrimSpace(v.Buffer())
+	if line == "" {
+		return nil
+	}
 
 	// Write to server connection
 	if err := send(conn, line); err != nil {
