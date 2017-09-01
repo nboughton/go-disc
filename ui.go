@@ -65,7 +65,11 @@ func uiKeybindings(g *gocui.Gui) error {
 
 	if err := g.SetKeybinding(vInput, gocui.KeyEnd, gocui.ModNone,
 		func(g *gocui.Gui, v *gocui.View) error {
-			return v.SetCursor(len(v.Buffer())-1, 0)
+			n := len(v.Buffer()) - 1
+			if n <= 0 {
+				return nil
+			}
+			return v.SetCursor(n, 0)
 		}); err != nil {
 		return err
 	}
