@@ -66,7 +66,7 @@ func uiKeybindings(g *gocui.Gui) error {
 	if err := g.SetKeybinding(vInput, gocui.KeyEnd, gocui.ModNone,
 		func(g *gocui.Gui, v *gocui.View) error {
 			n := len(v.Buffer()) - 1
-			if n <= 0 {
+			if n < 0 {
 				return nil
 			}
 			return v.SetCursor(n, 0)
@@ -82,16 +82,14 @@ func uiKeybindings(g *gocui.Gui) error {
 	// Scroll cmd buffer
 	if err := g.SetKeybinding(vInput, gocui.KeyArrowUp, gocui.ModNone,
 		func(g *gocui.Gui, v *gocui.View) error {
-			scrollCmdHistory(v, -1)
-			return nil
+			return scrollCmdHistory(v, -1)
 		}); err != nil {
 		return err
 	}
 
 	if err := g.SetKeybinding(vInput, gocui.KeyArrowDown, gocui.ModNone,
 		func(g *gocui.Gui, v *gocui.View) error {
-			scrollCmdHistory(v, 1)
-			return nil
+			return scrollCmdHistory(v, 1)
 		}); err != nil {
 		return err
 	}
@@ -143,7 +141,7 @@ func tabComplete(g *gocui.Gui, v *gocui.View) error {
 	return nil
 }
 
-func scrollCmdHistory(v *gocui.View, dy int) {
+func scrollCmdHistory(v *gocui.View, dy int) error {
 	i := cmdIdx + dy
 	switch {
 	case i >= 0 && i < len(cmdBuffer):
@@ -154,6 +152,8 @@ func scrollCmdHistory(v *gocui.View, dy int) {
 	case i == len(cmdBuffer):
 		zeroLine(v)
 	}
+
+	return nil
 }
 
 func uiQuit(g *gocui.Gui, v *gocui.View) error {
