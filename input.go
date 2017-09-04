@@ -42,12 +42,9 @@ func handlePostSend(line string) error {
 		return gocui.ErrQuit
 	}
 
-	// Append line to cmd bufer and set current index to last line
-	// Ignore blank returns
-	if cmds.Logging() && line != "" {
-		cmds.Log(line)
+	cmds.Log(line)
 
-		// Add it to the autocomplete dict as well
+	if cmds.Logging() && line != "" {
 		for _, s := range strings.Fields(line) {
 			dict.Add(s)
 		}

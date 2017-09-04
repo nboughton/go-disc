@@ -26,7 +26,7 @@ func (h *History) SetLogging(b bool) {
 // Log adds a new line to the buffer and sets the new 0 value of the
 // index
 func (h *History) Log(str string) {
-	if h.log {
+	if h.log && str != "" {
 		h.buffer = append(h.buffer, str)
 		h.idx = len(h.buffer)
 	}
@@ -46,7 +46,7 @@ func (h *History) Prev() string {
 // Next returns the next line in the log buffer
 func (h *History) Next() string {
 	i := h.idx + 1
-	if i <= len(h.buffer) {
+	if i < len(h.buffer) {
 		h.idx = i
 		return h.buffer[i]
 	}

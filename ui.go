@@ -82,14 +82,14 @@ func uiKeybindings(g *gocui.Gui) error {
 	// Scroll cmd buffer
 	if err := g.SetKeybinding(vInput, gocui.KeyArrowUp, gocui.ModNone,
 		func(g *gocui.Gui, v *gocui.View) error {
-			return scrollCmdHistory(v, -1)
+			return scrollCmdHistory(v, true)
 		}); err != nil {
 		return err
 	}
 
 	if err := g.SetKeybinding(vInput, gocui.KeyArrowDown, gocui.ModNone,
 		func(g *gocui.Gui, v *gocui.View) error {
-			return scrollCmdHistory(v, 1)
+			return scrollCmdHistory(v, false)
 		}); err != nil {
 		return err
 	}
@@ -141,13 +141,12 @@ func tabComplete(g *gocui.Gui, v *gocui.View) error {
 	return nil
 }
 
-func scrollCmdHistory(v *gocui.View, dy int) error {
+func scrollCmdHistory(v *gocui.View, back bool) error {
 	v.Clear()
-	switch {
-	case dy > 0:
-		fmt.Fprint(v, cmds.Next())
-	case dy < 0:
+	if back {
 		fmt.Fprint(v, cmds.Prev())
+	} else {
+		fmt.Fprint(v, cmds.Next())
 	}
 
 	return nil
