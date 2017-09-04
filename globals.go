@@ -1,7 +1,8 @@
 package main
 
 import (
-	tc "github.com/nboughton/go-disc/complete"
+	"github.com/nboughton/go-disc/complete"
+	"github.com/nboughton/go-disc/history"
 	"github.com/stesla/gotelnet"
 )
 
@@ -9,12 +10,6 @@ type config struct {
 	Session string
 	Host    string
 	Port    int
-}
-
-type cmdHistory struct {
-	buffer []string
-	idx    int
-	log    bool
 }
 
 const (
@@ -28,6 +23,6 @@ const (
 var (
 	conn gotelnet.Conn
 	cfg  *config
-	cmds cmdHistory
-	dict = tc.New()
+	cmds = history.New()
+	dict = complete.New()
 )

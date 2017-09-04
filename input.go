@@ -44,9 +44,8 @@ func handlePostSend(line string) error {
 
 	// Append line to cmd bufer and set current index to last line
 	// Ignore blank returns
-	if cmds.log && line != "" {
-		cmds.buffer = append(cmds.buffer, line)
-		cmds.idx = len(cmds.buffer)
+	if cmds.Logging() && line != "" {
+		cmds.Log(line)
 
 		// Add it to the autocomplete dict as well
 		for _, s := range strings.Fields(line) {

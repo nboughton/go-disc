@@ -47,10 +47,10 @@ func handleRecvLine(line []byte) string {
 	// Trim unwanted characters
 	l := strings.TrimPrefix(string(line), "> ")
 
-	// Dont allow logging to the cmdBuffer until
+	// Dont allow logging to the cmd history until
 	// after a user is logged in.
 	if strings.HasPrefix(l, "You last logged in from") || strings.HasPrefix(l, "You are already playing") {
-		cmds.log = true
+		cmds.SetLogging(true)
 	}
 
 	// Add words to tab complete dict
