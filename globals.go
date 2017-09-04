@@ -11,6 +11,12 @@ type config struct {
 	Port    int
 }
 
+type cmdHistory struct {
+	buffer []string
+	idx    int
+	log    bool
+}
+
 const (
 	vMain     = "mainview"
 	vLeftSide = "leftsideview"
@@ -20,10 +26,8 @@ const (
 )
 
 var (
-	conn           gotelnet.Conn
-	cfg            *config
-	cmdBuffer      []string
-	cmdIdx         int
-	logToCmdBuffer bool
-	dict           = tc.New()
+	conn gotelnet.Conn
+	cfg  *config
+	cmds cmdHistory
+	dict = tc.New()
 )

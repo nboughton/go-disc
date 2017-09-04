@@ -142,14 +142,14 @@ func tabComplete(g *gocui.Gui, v *gocui.View) error {
 }
 
 func scrollCmdHistory(v *gocui.View, dy int) error {
-	i := cmdIdx + dy
+	i := cmds.idx + dy
 	switch {
-	case i >= 0 && i < len(cmdBuffer):
-		cmdIdx = i
+	case i >= 0 && i < len(cmds.buffer):
+		cmds.idx = i
 
 		v.Clear()
-		fmt.Fprintf(v, "%v", cmdBuffer[cmdIdx])
-	case i == len(cmdBuffer):
+		fmt.Fprintf(v, "%v", cmds.buffer[cmds.idx])
+	case i == len(cmds.buffer):
 		zeroLine(v)
 	}
 

@@ -50,7 +50,7 @@ func handleRecvLine(line []byte) string {
 	// Dont allow logging to the cmdBuffer until
 	// after a user is logged in.
 	if strings.HasPrefix(l, "You last logged in from") || strings.HasPrefix(l, "You are already playing") {
-		logToCmdBuffer = true
+		cmds.log = true
 	}
 
 	// Add words to tab complete dict
