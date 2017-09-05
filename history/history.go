@@ -40,7 +40,7 @@ func (h *History) Prev() string {
 		return h.buffer[i]
 	}
 
-	return ""
+	return h.buffer[0]
 }
 
 // Next returns the next line in the log buffer
@@ -51,5 +51,5 @@ func (h *History) Next() string {
 		return h.buffer[i]
 	}
 
-	return ""
+	return h.buffer[len(h.buffer)-1]
 }
