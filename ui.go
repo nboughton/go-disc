@@ -9,23 +9,13 @@ import (
 func uiLayout(g *gocui.Gui) error {
 	maxX, maxY := g.Size()
 
-	/*
-		if v, err := g.SetView(vLeftSide, 0, 0, int(0.2*float32(maxX)), maxY); err != nil {
-			if err != gocui.ErrUnknownView {
-				return err
-			}
-
-			v.Title = "Map"
-		}
-	*/
-
 	if v, err := g.SetView(vTop, minX, minY, maxX, minY+9); err != nil {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
 
 		// Set view parameters
-		textBox(v)
+		uiTextBox(v)
 	}
 
 	if v, err := g.SetView(vMain, minX, minY+9, maxX, maxY-2); err != nil {
@@ -34,7 +24,7 @@ func uiLayout(g *gocui.Gui) error {
 		}
 
 		// Set view paramters
-		textBox(v)
+		uiTextBox(v)
 	}
 
 	if v, err := g.SetView(vInput, minX, maxY-2, maxX, maxY); err != nil {
@@ -139,7 +129,7 @@ func tabComplete(g *gocui.Gui, v *gocui.View) error {
 	tab, _ := dict.Tab(str)
 
 	// Catch the current line, zero the content and print the line with the completion
-	zeroLine(v)
+	uiZeroLine(v)
 	fmt.Fprintf(v, "%s%s", line[:x], tab)
 
 	// Set cursor to its original position in case we need to tab again.
@@ -162,12 +152,12 @@ func uiQuit(g *gocui.Gui, v *gocui.View) error {
 	return gocui.ErrQuit
 }
 
-func textBox(v *gocui.View) {
+func uiTextBox(v *gocui.View) {
 	v.Autoscroll = true
 	v.Wrap = true
 }
 
-func zeroLine(v *gocui.View) {
+func uiZeroLine(v *gocui.View) {
 	v.SetCursor(0, 0)
 	v.SetOrigin(0, 0)
 	v.Clear()

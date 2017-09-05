@@ -25,16 +25,16 @@ func input(g *gocui.Gui, v *gocui.View) error {
 	fmt.Fprintf(vM, "\n")
 
 	// Clear internal buffer and set cursor
-	zeroLine(v)
+	uiZeroLine(v)
 
-	if err := handlePostSend(line); err != nil {
+	if err := postSend(line); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func handlePostSend(line string) error {
+func postSend(line string) error {
 	// Current handling of quit, should probably have conn.Close
 	// handled by receiving a CTCP disconnect in the recv func
 	if line == "quit" {
