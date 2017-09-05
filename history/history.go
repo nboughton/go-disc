@@ -10,7 +10,11 @@ type History struct {
 
 // New returns an empty, zero value'd History struct
 func New() *History {
-	return &History{}
+	return &History{
+		buffer: []string{""},
+		idx:    1,
+		log:    false,
+	}
 }
 
 // Logging returns whether or not logging is currently enabled.

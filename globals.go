@@ -21,8 +21,8 @@ const (
 )
 
 var (
-	conn gotelnet.Conn
 	cfg  *config
+	conn gotelnet.Conn
 	cmds = history.New()
 	dict = complete.New()
 )

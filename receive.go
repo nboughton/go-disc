@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"os"
 	"strings"
 	"sync"
 
@@ -14,20 +15,19 @@ import (
 func listen(g *gocui.Gui, c io.Reader) {
 	// Create bufio Reader for incoming data and mutex
 	var (
-		b  = bufio.NewReader(c)
 		mu sync.Mutex
+		b  = bufio.NewReader(c)
 	)
+
+	f, _ := os.Create("go-disc.raw.log")
+	defer f.Close()
 
 	// Loop input
 	for {
 		mu.Lock()
-		// Bizarrely the other Read* methods don't work
-		// ReadLine('\n'), ReadByte('\n') all don't produce
-		// output that prints properly into the view window
-		var (
-			l, _, _ = b.ReadLine()
-			line    = handleRecvLine(l)
-		)
+		l, _, _ := b.ReadLine()
+		fmt.Fprintf(f, "%s\n", l)
+		line := handleRecvLine(l)
 
 		// Print new data to view(s)
 		g.Update(func(g *gocui.Gui) error {
