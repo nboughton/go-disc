@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
-	//"regexp"
+	"regexp"
 	"strings"
 	"sync"
 
@@ -14,9 +14,10 @@ import (
 )
 
 var (
-	ansiEOL      = "[39;49m[0;10m"
-	dwAnsiTalker = "[1m[32m"
+	//ansiEOL      = "[39;49m[0;10m"
 	mu           sync.Mutex
+	dwAnsiTalker = "[1m[32m"
+	loginTrigger = regexp.MustCompile(`You (last logged in from|are already playing)`)
 )
 
 func listen(g *gocui.Gui, c io.Reader) {
@@ -71,9 +72,8 @@ func processLine(line []byte) string {
 	// Trim unwanted characters
 	l := strings.TrimPrefix(string(line), "> ")
 
-	// Dont allow logging to the cmd history until
-	// after a user is logged in.
-	if strings.HasPrefix(l, "You last logged in from") || strings.HasPrefix(l, "You are already playing") {
+	// Dont allow logging to the cmd history until after a user is logged in.
+	if !cmds.Logging() && loginTrigger.MatchString(l) {
 		cmds.SetLogging(true)
 	}
 

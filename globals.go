@@ -13,12 +13,12 @@ type config struct {
 }
 
 const (
-	vMain     = "mainview"
-	vTop      = "topview"
-	vLeftSide = "leftsideview"
-	vInput    = "inputview"
-	minX      = -1
-	minY      = -1
+	vMain  = "view_main"
+	vTop   = "view_top"
+	vSide  = "view_side"
+	vInput = "view_input"
+	minX   = -1
+	minY   = -1
 )
 
 var (

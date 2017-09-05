@@ -42,8 +42,10 @@ func handlePostSend(line string) error {
 		return gocui.ErrQuit
 	}
 
+	// Log sent line
 	cmds.Log(line)
 
+	// Add text to tab complete
 	if cmds.Logging() && line != "" {
 		for _, s := range strings.Fields(line) {
 			dict.Add(s)
