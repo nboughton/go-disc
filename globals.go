@@ -14,6 +14,7 @@ type config struct {
 
 const (
 	vMain     = "mainview"
+	vTop      = "topview"
 	vLeftSide = "leftsideview"
 	vInput    = "inputview"
 	minX      = -1

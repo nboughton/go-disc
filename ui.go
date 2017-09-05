@@ -19,16 +19,22 @@ func uiLayout(g *gocui.Gui) error {
 		}
 	*/
 
-	//if v, err := g.SetView(vMain, int(0.2*float32(maxX)), 0, maxX, maxY); err != nil {
-	if v, err := g.SetView(vMain, minX, minY, maxX, maxY-2); err != nil {
+	if v, err := g.SetView(vTop, minX, minY, maxX, minY+6); err != nil {
+		if err != gocui.ErrUnknownView {
+			return err
+		}
+
+		// Set view parameters
+		textBox(v)
+	}
+
+	if v, err := g.SetView(vMain, minX, minY+6, maxX, maxY-2); err != nil {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
 
 		// Set some view paramters
-		//v.Title = cfg.Session
-		v.Autoscroll = true
-		v.Wrap = true
+		textBox(v)
 	}
 
 	if v, err := g.SetView(vInput, minX, maxY-2, maxX, maxY); err != nil {
@@ -37,6 +43,7 @@ func uiLayout(g *gocui.Gui) error {
 		}
 
 		// View settings
+		v.Frame = false
 		v.Editable = true
 		v.Wrap = true
 		v.Highlight = true
@@ -154,6 +161,12 @@ func scrollCmdHistory(v *gocui.View, back bool) error {
 
 func uiQuit(g *gocui.Gui, v *gocui.View) error {
 	return gocui.ErrQuit
+}
+
+func textBox(v *gocui.View) {
+	//v.Frame = false
+	v.Autoscroll = true
+	v.Wrap = true
 }
 
 func zeroLine(v *gocui.View) {

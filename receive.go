@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	//"regexp"
 	"strings"
 	"sync"
 
@@ -12,13 +13,17 @@ import (
 	re "github.com/nboughton/go-utils/regex/common"
 )
 
-func listen(g *gocui.Gui, c io.Reader) {
-	// Create bufio Reader for incoming data and mutex
-	var (
-		mu sync.Mutex
-		b  = bufio.NewReader(c)
-	)
+var (
+	ansiEOL      = "[39;49m[0;10m"
+	dwAnsiTalker = "[1m[32m"
+	mu           sync.Mutex
+)
 
+func listen(g *gocui.Gui, c io.Reader) {
+	// Create bufio Reader for incoming data
+	b := bufio.NewReader(c)
+
+	// Open file and print raw data for testing
 	f, _ := os.Create("go-disc.raw.log")
 	defer f.Close()
 
@@ -26,21 +31,40 @@ func listen(g *gocui.Gui, c io.Reader) {
 	for {
 		mu.Lock()
 		l, _, _ := b.ReadLine()
-		fmt.Fprintf(f, "%s\n", l)
 		line := handleRecvLine(l)
 
-		// Print new data to view(s)
-		g.Update(func(g *gocui.Gui) error {
-			v, err := g.View(vMain)
-			if err != nil {
-				return err
-			}
+		// Print debugging data to raw log
+		fmt.Fprintln(f, line)
 
-			fmt.Fprintln(v, line)
-			mu.Unlock()
-			return nil
-		})
+		printLine(g, line)
 	}
+}
+
+func printLine(g *gocui.Gui, line string) {
+	// Print new data to view(s)
+	g.Update(func(g *gocui.Gui) error {
+		// Get views to print to
+		vM, err := g.View(vMain)
+		if err != nil {
+			return err
+		}
+
+		vT, err := g.View(vTop)
+		if err != nil {
+			return err
+		}
+
+		// Print to appropriate view
+		switch {
+		case strings.Contains(line, dwAnsiTalker):
+			fmt.Fprintln(vT, line)
+		default:
+			fmt.Fprintln(vM, line)
+		}
+
+		mu.Unlock()
+		return nil
+	})
 }
 
 func handleRecvLine(line []byte) string {
