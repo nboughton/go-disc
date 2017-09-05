@@ -31,16 +31,16 @@ func listen(g *gocui.Gui, c io.Reader) {
 	for {
 		mu.Lock()
 		l, _, _ := b.ReadLine()
-		line := handleRecvLine(l)
+		line := processLine(l)
 
 		// Print debugging data to raw log
 		fmt.Fprintln(f, line)
 
-		printLine(g, line)
+		printToViews(g, line)
 	}
 }
 
-func printLine(g *gocui.Gui, line string) {
+func printToViews(g *gocui.Gui, line string) {
 	// Print new data to view(s)
 	g.Update(func(g *gocui.Gui) error {
 		// Get views to print to
@@ -67,7 +67,7 @@ func printLine(g *gocui.Gui, line string) {
 	})
 }
 
-func handleRecvLine(line []byte) string {
+func processLine(line []byte) string {
 	// Trim unwanted characters
 	l := strings.TrimPrefix(string(line), "> ")
 

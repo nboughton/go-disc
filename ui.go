@@ -33,7 +33,7 @@ func uiLayout(g *gocui.Gui) error {
 			return err
 		}
 
-		// Set some view paramters
+		// Set view paramters
 		textBox(v)
 	}
 
@@ -43,7 +43,6 @@ func uiLayout(g *gocui.Gui) error {
 		}
 
 		// View settings
-		v.Frame = false
 		v.Editable = true
 		v.Wrap = true
 		v.Highlight = true
@@ -164,7 +163,6 @@ func uiQuit(g *gocui.Gui, v *gocui.View) error {
 }
 
 func textBox(v *gocui.View) {
-	//v.Frame = false
 	v.Autoscroll = true
 	v.Wrap = true
 }
