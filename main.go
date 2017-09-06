@@ -5,7 +5,13 @@ import (
 	"log"
 
 	"github.com/jroimartin/gocui"
+	"github.com/nboughton/go-disc/complete"
 	"github.com/nboughton/go-disc/mud"
+)
+
+var (
+	client *mud.Client
+	dict   = complete.New()
 )
 
 func main() {
@@ -16,7 +22,7 @@ func main() {
 	var err error
 	client, err = mud.NewClient(*s)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("CONNECTION ERR:", err)
 	}
 
 	// Initialise g

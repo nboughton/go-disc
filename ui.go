@@ -6,6 +6,15 @@ import (
 	"github.com/jroimartin/gocui"
 )
 
+const (
+	vMain  = "view_main"
+	vTop   = "view_top"
+	vSide  = "view_side"
+	vInput = "view_input"
+	minX   = -1
+	minY   = -1
+)
+
 func uiLayout(g *gocui.Gui) error {
 	maxX, maxY := g.Size()
 
