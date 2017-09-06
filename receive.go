@@ -35,7 +35,7 @@ func printToViews(g *gocui.Gui, line string) {
 		// Print to appropriate view
 		switch {
 		case client.Site.IsChat(line):
-			fmt.Fprintln(vT, line)
+			fmt.Fprintln(vT, strings.Replace(line, "  ", "", -1))
 		default:
 			fmt.Fprintln(vM, line)
 		}

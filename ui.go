@@ -18,7 +18,7 @@ const (
 func uiLayout(g *gocui.Gui) error {
 	maxX, maxY := g.Size()
 
-	if v, err := g.SetView(vTop, minX, minY, maxX, minY+9); err != nil {
+	if v, err := g.SetView(vTop, minX, minY-11, maxX, maxY+2); err != nil {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
@@ -27,7 +27,7 @@ func uiLayout(g *gocui.Gui) error {
 		uiTextBox(v)
 	}
 
-	if v, err := g.SetView(vMain, minX, minY+9, maxX, maxY-2); err != nil {
+	if v, err := g.SetView(vMain, minX, minY, maxX, maxY-11); err != nil {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
