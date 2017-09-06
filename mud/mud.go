@@ -78,7 +78,7 @@ func (c *Client) listen() {
 
 		if !c.LoggedIn() && c.Site.LoginSuccess(line) {
 			c.Cmds.SetLogging(true)
-			c.SetLoggedIn(true)
+			c.loggedIn = true
 		}
 
 		c.r <- string(l)
@@ -93,9 +93,9 @@ func (c *Client) LoggedIn() bool {
 
 // SetLoggedIn allows one to set whether or not a successful login has
 // occurred
-func (c *Client) SetLoggedIn(b bool) {
-	c.loggedIn = b
-}
+//func (c *Client) SetLoggedIn(b bool) {
+//	c.loggedIn = b
+//}
 
 // Receive creates a listener channel for server response text
 func (c *Client) Receive() chan string {
