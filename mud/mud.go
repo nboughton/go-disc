@@ -3,37 +3,38 @@ package mud
 import (
 	"bufio"
 	"fmt"
-	"regexp"
 
 	"github.com/nboughton/go-disc/history"
+	"github.com/nboughton/go-disc/mud/sites"
 	"github.com/stesla/gotelnet"
 )
-
-// Site defines the interface used by sites in the context of the
-// application
-type Site interface {
-	Name() string
-	LoginResponse() *regexp.Regexp
-	MatchChat() *regexp.Regexp
-}
-
-var loginSuccess = regexp.MustCompile(`You (last logged in from|are already playing)`)
 
 // Client wraps the telnet connection and provides some extra functionality
 type Client struct {
 	r             chan string      // Receiver channel for server text
 	Cmds          *history.History // Command history
+	Site          sites.Site       // Supported site
 	loggedIn      bool             // Logged in or not
 	gotelnet.Conn                  // Wrap Conn interface for reading/writing data
 }
 
 // NewClient attempts to connect to the host and return a working client connection
-func NewClient(host string, port int) (*Client, error) {
+func NewClient(site string) (*Client, error) {
 	c := new(Client)
+
+	// Check site
+	s, ok := sites.Supported[site]
+	if !ok {
+		fmt.Println("Supported sites:")
+		for sName := range sites.Supported {
+			fmt.Println(sName)
+		}
+		return c, fmt.Errorf("Unsupported site [%s]", site)
+	}
 
 	// Connect
 	var err error
-	c.Conn, err = gotelnet.Dial(fmt.Sprintf("%s:%d", host, port))
+	c.Conn, err = gotelnet.Dial(fmt.Sprintf("%s:%d", s.Host(), s.Port()))
 	if err != nil {
 		return c, err
 	}
@@ -55,10 +56,11 @@ func (c *Client) listen() {
 		l, _, _ := b.ReadLine()
 		line := string(l)
 
-		if !c.LoggedIn() && loginSuccess.MatchString(line) {
+		if !c.LoggedIn() && c.Site.LoginSuccess(line) {
 			c.Cmds.SetLogging(true)
 			c.SetLoggedIn(true)
 		}
+
 		c.r <- string(l)
 	}
 }

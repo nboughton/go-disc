@@ -22,9 +22,9 @@ func listen(g *gocui.Gui) {
 	defer f.Close()
 
 	// Loop input
-	for l := range client.Receive() {
+	for line := range client.Receive() {
 		mu.Lock()
-		line := processLine(l)
+		line = processLine(line)
 
 		// Print debugging data to raw log
 		fmt.Fprintln(f, line)
@@ -49,7 +49,7 @@ func printToViews(g *gocui.Gui, line string) {
 
 		// Print to appropriate view
 		switch {
-		case strings.Contains(line, dwAnsiTalker):
+		case client.Site.IsChat(line):
 			fmt.Fprintln(vT, line)
 		default:
 			fmt.Fprintln(vM, line)

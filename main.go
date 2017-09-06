@@ -2,25 +2,19 @@ package main
 
 import (
 	"flag"
-	//"fmt"
 	"log"
 
 	"github.com/jroimartin/gocui"
 	"github.com/nboughton/go-disc/mud"
-	//"github.com/stesla/gotelnet"
 )
 
 func main() {
 	s := flag.String("s", "Discworld", "Set name of the session.")
-	h := flag.String("h", "discworld.atuin.net", "Set host to connect to.")
-	p := flag.Int("p", 4242, "Set port to connect to.")
 	flag.Parse()
-
-	cfg = &config{*s, *h, *p}
 
 	// Initialise connection
 	var err error
-	client, err = mud.NewClient(*h, *p)
+	client, err = mud.NewClient(*s)
 	if err != nil {
 		log.Fatal(err)
 	}
