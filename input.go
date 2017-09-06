@@ -42,7 +42,7 @@ func postSend(line string) error {
 	}
 
 	// Add text to tab complete
-	if client.Cmds.Logging() && line != "" {
+	if client.LoggedIn() && line != "" {
 		for _, s := range strings.Fields(line) {
 			dict.Add(s)
 		}

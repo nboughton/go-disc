@@ -10,11 +10,7 @@ import (
 	re "github.com/nboughton/go-utils/regex/common"
 )
 
-var (
-	//ansiEOL      = "[39;49m[0;10m"
-	mu           sync.Mutex
-	dwAnsiTalker = "[1m[32m"
-)
+var mu sync.Mutex
 
 func listen(g *gocui.Gui) {
 	// Open file and print raw data for testing
