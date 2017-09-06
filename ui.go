@@ -70,7 +70,7 @@ func uiKeybindings(g *gocui.Gui) error {
 
 	if err := g.SetKeybinding(vInput, gocui.KeyEnd, gocui.ModNone,
 		func(g *gocui.Gui, v *gocui.View) error {
-			n := len(v.Buffer()) - 1
+			n := len(v.ViewBuffer()) - 1
 			if n < 0 {
 				return nil
 			}

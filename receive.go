@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"strings"
 	"sync"
 
@@ -13,19 +12,9 @@ import (
 var mu sync.Mutex
 
 func listen(g *gocui.Gui) {
-	// Open file and print raw data for testing
-	f, _ := os.Create("go-disc.raw.log")
-	defer f.Close()
-
-	// Loop input
 	for line := range client.Receive() {
 		mu.Lock()
-		line = processLine(line)
-
-		// Print debugging data to raw log
-		fmt.Fprintln(f, line)
-
-		printToViews(g, line)
+		printToViews(g, processLine(line))
 	}
 }
 

@@ -29,7 +29,7 @@ func (dw Discworld) Port() int {
 	return dw.port
 }
 
-// LoginSuccess satisfies the LoginRespone func for the Site interface
+// LoginSuccess satisfies the LoginSuccess func for the Site interface
 func (dw Discworld) LoginSuccess(line string) bool {
 	return dw.loginRegex.MatchString(line)
 }

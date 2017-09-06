@@ -3,6 +3,7 @@ package mud
 import (
 	"bufio"
 	"fmt"
+	"os"
 
 	"github.com/nboughton/go-disc/history"
 	"github.com/nboughton/go-disc/mud/sites"
@@ -16,11 +17,25 @@ type Client struct {
 	Site          sites.Site       // Supported site
 	loggedIn      bool             // Logged in or not
 	gotelnet.Conn                  // Wrap Conn interface for reading/writing data
+	debug         bool             // Print debug?
+	debugFile     *os.File
 }
 
 // NewClient attempts to connect to the host and return a working client connection
 func NewClient(site string) (*Client, error) {
 	c := new(Client)
+
+	// Hacky but whatever.
+	c.debug = true
+
+	// Create debug log
+	if c.debug {
+		var err error
+		c.debugFile, err = os.Create(os.Args[0] + ".dbg.log")
+		if err != nil {
+			return c, err
+		}
+	}
 
 	// Check site
 	s, ok := sites.Supported[site]
@@ -96,4 +111,11 @@ func (c *Client) Send(line string) error {
 	c.Cmds.Log(line)
 
 	return nil
+}
+
+// Dbg prints information to a debug log. This will probably get removed at some point
+func (c *Client) Dbg(str string) {
+	if c.debug {
+		fmt.Fprintln(c.debugFile, str)
+	}
 }
