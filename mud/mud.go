@@ -25,8 +25,8 @@ type Client struct {
 func NewClient(site string) (*Client, error) {
 	c := new(Client)
 
-	// Hacky but whatever.
-	c.debug = true
+	// Uncomment to print debug output to log
+	//c.debug = true
 
 	// Create debug log
 	if c.debug {
