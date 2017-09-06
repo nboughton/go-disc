@@ -7,20 +7,20 @@ import (
 )
 
 const (
-	vMain       = "view_main"
-	vChat       = "view_chat"
-	vSide       = "view_side"
-	vInput      = "view_input"
-	minX        = -1
-	minY        = -1
-	chatHeight  = 9
-	inputHeight = 2
+	vMain  = "view_main"
+	vChat  = "view_chat"
+	vSide  = "view_side"
+	vInput = "view_input"
+	minX   = -1
+	minY   = -1
+	chatY  = 9
+	inputY = 2
 )
 
 func uiLayout(g *gocui.Gui) error {
 	maxX, maxY := g.Size()
 
-	if v, err := g.SetView(vChat, minX, maxY-chatHeight-inputHeight, maxX, maxY+inputHeight); err != nil {
+	if v, err := g.SetView(vChat, minX, maxY-chatY-inputY, maxX, maxY+inputY); err != nil {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
@@ -29,7 +29,7 @@ func uiLayout(g *gocui.Gui) error {
 		uiTextBox(v)
 	}
 
-	if v, err := g.SetView(vMain, minX, minY, maxX, maxY-chatHeight-inputHeight); err != nil {
+	if v, err := g.SetView(vMain, minX, minY, maxX, maxY-chatY-inputY); err != nil {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
@@ -38,7 +38,7 @@ func uiLayout(g *gocui.Gui) error {
 		uiTextBox(v)
 	}
 
-	if v, err := g.SetView(vInput, minX, maxY-inputHeight, maxX, maxY); err != nil {
+	if v, err := g.SetView(vInput, minX, maxY-inputY, maxX, maxY); err != nil {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
