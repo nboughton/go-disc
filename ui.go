@@ -43,8 +43,6 @@ func uiLayout(g *gocui.Gui) error {
 
 		// View settings
 		v.Editable = true
-		v.Wrap = true
-		v.Highlight = true
 
 		// Set focus on input
 		if _, err := g.SetCurrentView(vInput); err != nil {
@@ -70,10 +68,17 @@ func uiKeybindings(g *gocui.Gui) error {
 
 	if err := g.SetKeybinding(vInput, gocui.KeyEnd, gocui.ModNone,
 		func(g *gocui.Gui, v *gocui.View) error {
-			n := len(v.ViewBuffer()) - 1
-			if n < 0 {
+			maxX, _ := v.Size()
+			n := len(v.Buffer()) - 1
+			if n <= 0 {
 				return nil
 			}
+
+			// Don't overshoot maxX
+			if n > maxX {
+				n = maxX - 1
+			}
+
 			return v.SetCursor(n, 0)
 		}); err != nil {
 		return err
