@@ -31,6 +31,7 @@ func NewClient(site string) (*Client, error) {
 		}
 		return c, fmt.Errorf("Unsupported site [%s]", site)
 	}
+	c.Site = s
 
 	// Connect
 	var err error
@@ -53,7 +54,11 @@ func (c *Client) listen() {
 	b := bufio.NewReader(c.Conn)
 
 	for {
-		l, _, _ := b.ReadLine()
+		l, _, err := b.ReadLine()
+		if err != nil {
+			continue
+		}
+
 		line := string(l)
 
 		if !c.LoggedIn() && c.Site.LoginSuccess(line) {
