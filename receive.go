@@ -27,7 +27,7 @@ func printToViews(g *gocui.Gui, line string) {
 			return err
 		}
 
-		vT, err := g.View(vTop)
+		vC, err := g.View(vChat)
 		if err != nil {
 			return err
 		}
@@ -35,7 +35,7 @@ func printToViews(g *gocui.Gui, line string) {
 		// Print to appropriate view
 		switch {
 		case client.Site.IsChat(line):
-			fmt.Fprintln(vT, strings.Replace(line, "  ", "", -1))
+			fmt.Fprintln(vC, strings.Replace(line, "  ", "", -1))
 		default:
 			fmt.Fprintln(vM, line)
 		}

@@ -8,7 +8,7 @@ import (
 
 const (
 	vMain  = "view_main"
-	vTop   = "view_top"
+	vChat  = "view_chat"
 	vSide  = "view_side"
 	vInput = "view_input"
 	minX   = -1
@@ -18,7 +18,7 @@ const (
 func uiLayout(g *gocui.Gui) error {
 	maxX, maxY := g.Size()
 
-	if v, err := g.SetView(vTop, minX, minY-11, maxX, maxY+2); err != nil {
+	if v, err := g.SetView(vChat, minX, maxY-11, maxX, maxY+2); err != nil {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
