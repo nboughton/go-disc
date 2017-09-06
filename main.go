@@ -2,11 +2,12 @@ package main
 
 import (
 	"flag"
-	"fmt"
+	//"fmt"
 	"log"
 
 	"github.com/jroimartin/gocui"
-	"github.com/stesla/gotelnet"
+	"github.com/nboughton/go-disc/mud"
+	//"github.com/stesla/gotelnet"
 )
 
 func main() {
@@ -19,11 +20,10 @@ func main() {
 
 	// Initialise connection
 	var err error
-	conn, err = gotelnet.Dial(fmt.Sprintf("%s:%d", cfg.Host, cfg.Port))
+	client, err = mud.NewClient(*h, *p)
 	if err != nil {
-		log.Fatal("INIT TELNET ERR:", err)
+		log.Fatal(err)
 	}
-	defer conn.Close()
 
 	// Initialise g
 	g, err := gocui.NewGui(gocui.Output256)
@@ -43,7 +43,7 @@ func main() {
 	}
 
 	// Set up receiver from mud server
-	go listen(g, conn)
+	go listen(g)
 
 	// Run loop
 	if err := g.MainLoop(); err != nil && err != gocui.ErrQuit {

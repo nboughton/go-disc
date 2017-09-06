@@ -140,9 +140,9 @@ func tabComplete(g *gocui.Gui, v *gocui.View) error {
 func scrollCmdHistory(v *gocui.View, back bool) error {
 	v.Clear()
 	if back {
-		fmt.Fprint(v, cmds.Prev())
+		fmt.Fprint(v, client.Cmds.Prev())
 	} else {
-		fmt.Fprint(v, cmds.Next())
+		fmt.Fprint(v, client.Cmds.Next())
 	}
 
 	return nil

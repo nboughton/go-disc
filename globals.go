@@ -2,8 +2,7 @@ package main
 
 import (
 	"github.com/nboughton/go-disc/complete"
-	"github.com/nboughton/go-disc/history"
-	"github.com/stesla/gotelnet"
+	"github.com/nboughton/go-disc/mud"
 )
 
 type config struct {
@@ -22,8 +21,7 @@ const (
 )
 
 var (
-	cfg  *config
-	conn gotelnet.Conn
-	cmds = history.New()
-	dict = complete.New()
+	cfg    *config
+	client *mud.Client
+	dict   = complete.New()
 )

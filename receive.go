@@ -1,11 +1,8 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"io"
 	"os"
-	"regexp"
 	"strings"
 	"sync"
 
@@ -17,21 +14,16 @@ var (
 	//ansiEOL      = "[39;49m[0;10m"
 	mu           sync.Mutex
 	dwAnsiTalker = "[1m[32m"
-	loginTrigger = regexp.MustCompile(`You (last logged in from|are already playing)`)
 )
 
-func listen(g *gocui.Gui, c io.Reader) {
-	// Create bufio Reader for incoming data
-	b := bufio.NewReader(c)
-
+func listen(g *gocui.Gui) {
 	// Open file and print raw data for testing
 	f, _ := os.Create("go-disc.raw.log")
 	defer f.Close()
 
 	// Loop input
-	for {
+	for l := range client.Receive() {
 		mu.Lock()
-		l, _, _ := b.ReadLine()
 		line := processLine(l)
 
 		// Print debugging data to raw log
@@ -68,14 +60,9 @@ func printToViews(g *gocui.Gui, line string) {
 	})
 }
 
-func processLine(line []byte) string {
+func processLine(line string) string {
 	// Trim unwanted characters
-	l := strings.TrimPrefix(string(line), "> ")
-
-	// Dont allow logging to the cmd history until after a user is logged in.
-	if !cmds.Logging() && loginTrigger.MatchString(l) {
-		cmds.SetLogging(true)
-	}
+	l := strings.TrimPrefix(line, "> ")
 
 	// Add words to tab complete dict
 	lineNoANSI := re.ANSI.ReplaceAllLiteralString(l, "")
