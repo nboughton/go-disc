@@ -91,13 +91,7 @@ func (c *Client) LoggedIn() bool {
 	return c.loggedIn
 }
 
-// SetLoggedIn allows one to set whether or not a successful login has
-// occurred
-//func (c *Client) SetLoggedIn(b bool) {
-//	c.loggedIn = b
-//}
-
-// Receive creates a listener channel for server response text
+// Receive returns the listener channel
 func (c *Client) Receive() chan string {
 	return c.r
 }
