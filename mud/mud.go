@@ -12,13 +12,14 @@ import (
 
 // Client wraps the telnet connection and provides some extra functionality
 type Client struct {
-	r             chan string      // Receiver channel for server text
-	Cmds          *history.History // Command history
-	Site          sites.Site       // Supported site
-	loggedIn      bool             // Logged in or not
-	gotelnet.Conn                  // Wrap Conn interface for reading/writing data
-	debug         bool             // Print debug?
-	debugFile     *os.File
+	r              chan string      // Receiver channel for server text
+	Cmds           *history.History // Command history
+	Site           sites.Site       // Supported site
+	loggedIn       bool             // Logged in or not
+	passwordPrompt bool             // Are we currently in a password prompt?
+	gotelnet.Conn                   // Wrap Conn interface for reading/writing data
+	debug          bool             // Print debug?
+	debugFile      *os.File
 }
 
 // NewClient attempts to connect to the host and return a working client connection
@@ -76,13 +77,23 @@ func (c *Client) listen() {
 
 		line := string(l)
 
-		if !c.LoggedIn() && c.Site.LoginSuccess(line) {
+		switch {
+		case !c.LoggedIn() && c.Site.LoginPrompt(line):
+			c.passwordPrompt = true
+		case !c.LoggedIn() && c.Site.LoginSuccess(line):
 			c.Cmds.SetLogging(true)
 			c.loggedIn = true
+			c.passwordPrompt = false
 		}
 
 		c.r <- string(l)
 	}
+}
+
+// PasswordPrompt lets the caller know if the user is currently entering a password
+// and should therefore mask input
+func (c *Client) PasswordPrompt() bool {
+	return c.passwordPrompt
 }
 
 // LoggedIn returns whether or not the client thinks a successful login

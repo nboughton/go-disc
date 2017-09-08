@@ -7,7 +7,7 @@ Still in very early development. It can, theoretically, support other MUDs by im
 # To do
  - [x] Connect and receive data into the main window
  - [x] Editable command line in separate view
- - [ ] Password shadowing during login
+ - [x] Password masking during login
  - [x] Scrollable command history
  - [ ] Tab completion - partially implemented
  - [ ] HP, GP, Burden meters in sidebar

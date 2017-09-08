@@ -5,6 +5,7 @@ type Site interface {
 	Name() string
 	Host() string
 	Port() int
+	LoginPrompt(string) bool
 	LoginSuccess(string) bool
 	IsChat(string) bool
 }

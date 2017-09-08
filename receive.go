@@ -13,6 +13,14 @@ var mu sync.Mutex
 
 func listen(g *gocui.Gui) {
 	for line := range client.Receive() {
+		// Account for if we are in a password prompt or not.
+		vI, _ := g.View(vInput)
+		if client.PasswordPrompt() {
+			vI.Mask = '*'
+		} else {
+			vI.Mask = 0
+		}
+
 		mu.Lock()
 		printToViews(g, processLine(line))
 	}
