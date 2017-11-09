@@ -26,11 +26,7 @@ func input(g *gocui.Gui, v *gocui.View) error {
 	// Clear internal buffer and set cursor
 	uiZeroLine(v)
 
-	if err := postSend(line); err != nil {
-		return err
-	}
-
-	return nil
+	return postSend(line)
 }
 
 func postSend(line string) error {
