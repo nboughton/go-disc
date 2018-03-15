@@ -107,11 +107,7 @@ func uiKeybindings(g *gocui.Gui) error {
 	}
 
 	// Tab completion
-	if err := g.SetKeybinding(vInput, gocui.KeyTab, gocui.ModNone, tabComplete); err != nil {
-		return err
-	}
-
-	return nil
+	return g.SetKeybinding(vInput, gocui.KeyTab, gocui.ModNone, tabComplete)
 }
 
 func tabComplete(g *gocui.Gui, v *gocui.View) error {
